@@ -2,7 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
 [![License](https://img.shields.io/npm/l/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
-[![LinuxDo](https://shorturl.at/ggSqS)](https://linux.do)
+[![LinuxDo](https://shorturl.at/ggSqS)](https://linux.do/t/topic/2055664)
 
 [English](./README.md) | 简体中文
 
