@@ -1,5 +1,9 @@
 # opencode-provider-alias
 
+[![NPM Version](https://img.shields.io/npm/v/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
+[![License](https://img.shields.io/npm/l/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
+[![LinuxDo](https://shorturl.at/ggSqS)](https://linux.do)
+
 English | [简体中文](./README.zh-CN.md)
 
 Alias and curate OpenCode providers with model metadata from [models.dev](https://models.dev/).

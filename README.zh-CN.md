@@ -1,5 +1,9 @@
 # opencode-provider-alias
 
+[![NPM Version](https://img.shields.io/npm/v/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
+[![License](https://img.shields.io/npm/l/opencode-provider-alias)](https://www.npmjs.com/package/opencode-provider-alias)
+[![LinuxDo](https://shorturl.at/ggSqS)](https://linux.do)
+
 [English](./README.md) | 简体中文
 
 `opencode-provider-alias` 是一个 OpenCode 插件，用于把本地 provider/model 名称映射到 [models.dev](https://models.dev/) 里的真实 provider/model，并自动补全模型元数据。
