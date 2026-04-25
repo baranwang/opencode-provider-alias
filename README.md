@@ -4,7 +4,7 @@ English | [简体中文](./README.zh-CN.md)
 
 Alias and curate OpenCode providers with model metadata from [models.dev](https://models.dev/).
 
-This plugin lets you define your own OpenCode provider IDs and model IDs, then hydrate them from an existing models.dev provider/model. It is useful when you want a provider such as `cch-gpt` to behave like `openai`, but expose only a selected model set or local model aliases.
+This plugin lets you define your own OpenCode provider IDs and model IDs, then hydrate them from an existing models.dev provider/model. It is useful when you want a local provider such as `my-openai` to behave like `openai`, but expose only a selected model set or local model aliases.
 
 ## Features
 
@@ -23,9 +23,9 @@ No manual install step is required for normal OpenCode usage. Reference the pack
 {
   "plugin": [
     [
-      "opencode-provider-alias",
+      "opencode-provider-alias@latest",
       {
-        "cch-gpt": {
+        "my-openai": {
           "provider": "openai",
           "includes": [
             "gpt-5.5",
@@ -39,9 +39,9 @@ No manual install step is required for normal OpenCode usage. Reference the pack
     ]
   ],
   "provider": {
-    "cch-gpt": {
+    "my-openai": {
       "npm": "@ai-sdk/openai",
-      "name": "CCH GPT",
+      "name": "My OpenAI",
       "options": {
         "apiKey": "{env:OPENAI_API_KEY}",
         "baseURL": "https://example.com/v1"
@@ -51,7 +51,7 @@ No manual install step is required for normal OpenCode usage. Reference the pack
 }
 ```
 
-The resulting `cch-gpt` provider keeps your provider config, but its model metadata is filled from the `openai` provider in models.dev.
+The resulting `my-openai` provider keeps your provider config, but its model metadata is filled from the `openai` provider in models.dev.
 
 ## Configuration
 
@@ -77,7 +77,7 @@ Use a string when you only need to map a local provider to a models.dev provider
 {
   "plugin": [
     [
-      "opencode-provider-alias",
+      "opencode-provider-alias@latest",
       {
         "gpt": "openai"
       }
@@ -103,7 +103,7 @@ Use `includes` to expose only selected models from the target provider.
 
 ```jsonc
 {
-  "cch-gpt": {
+  "my-openai": {
     "provider": "openai",
     "includes": ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini"]
   }
@@ -114,7 +114,7 @@ Use `includes` to expose only selected models from the target provider.
 
 ```jsonc
 {
-  "cch-gpt": {
+  "my-openai": {
     "provider": "openai",
     "includes": ["gpt-5.*", "!gpt-5.4-nano"]
   }

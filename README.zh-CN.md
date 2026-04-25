@@ -4,7 +4,7 @@
 
 `opencode-provider-alias` 是一个 OpenCode 插件，用于把本地 provider/model 名称映射到 [models.dev](https://models.dev/) 里的真实 provider/model，并自动补全模型元数据。
 
-它适合这种场景：你想在 OpenCode 里使用自己的 provider ID，例如 `cch-gpt`，但希望它继承 `openai` 的模型信息，同时只暴露一部分模型，或者给模型起本地别名。
+它适合这种场景：你想在 OpenCode 里使用自己的本地 provider ID，例如 `my-openai`，但希望它继承 `openai` 的模型信息，同时只暴露一部分模型，或者给模型起本地别名。
 
 ## 功能
 
@@ -23,9 +23,9 @@
 {
   "plugin": [
     [
-      "opencode-provider-alias",
+      "opencode-provider-alias@latest",
       {
-        "cch-gpt": {
+        "my-openai": {
           "provider": "openai",
           "includes": [
             "gpt-5.5",
@@ -39,9 +39,9 @@
     ]
   ],
   "provider": {
-    "cch-gpt": {
+    "my-openai": {
       "npm": "@ai-sdk/openai",
-      "name": "CCH GPT",
+      "name": "My OpenAI",
       "options": {
         "apiKey": "{env:OPENAI_API_KEY}",
         "baseURL": "https://example.com/v1"
@@ -51,7 +51,7 @@
 }
 ```
 
-最终的 `cch-gpt` provider 会保留你的 provider 配置，但模型元数据会从 models.dev 的 `openai` provider 中补全。
+最终的 `my-openai` provider 会保留你的 provider 配置，但模型元数据会从 models.dev 的 `openai` provider 中补全。
 
 ## 配置
 
@@ -77,7 +77,7 @@ type PluginOptions = Record<
 {
   "plugin": [
     [
-      "opencode-provider-alias",
+      "opencode-provider-alias@latest",
       {
         "gpt": "openai"
       }
@@ -103,7 +103,7 @@ type PluginOptions = Record<
 
 ```jsonc
 {
-  "cch-gpt": {
+  "my-openai": {
     "provider": "openai",
     "includes": ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini"]
   }
@@ -114,7 +114,7 @@ type PluginOptions = Record<
 
 ```jsonc
 {
-  "cch-gpt": {
+  "my-openai": {
     "provider": "openai",
     "includes": ["gpt-5.*", "!gpt-5.4-nano"]
   }
