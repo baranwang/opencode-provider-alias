@@ -1,5 +1,11 @@
 # opencode-provider-alias
 
+## 1.0.2
+
+### Patch Changes
+
+- 191af69: Preserve local model alias ids when hydrating custom model mappings.
+
 ## 1.0.1
 
 ### Patch Changes
