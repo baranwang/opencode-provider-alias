@@ -1,18 +1,41 @@
 {
   "name": "opencode-provider-alias",
   "version": "1.0.0",
+  "description": "Alias and curate OpenCode providers with model metadata from models.dev.",
+  "license": "MIT",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "provider-alias",
+    "models.dev",
+    "ai-sdk"
+  ],
+  "homepage": "https://github.com/baranwang/opencode-provider-alias#readme",
+  "bugs": {
+    "url": "https://github.com/baranwang/opencode-provider-alias/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baranwang/opencode-provider-alias.git"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "changeset": "changeset",
     "build": "rslib",
     "check": "biome check --write",
     "dev": "rslib --watch",
     "format": "biome format --write",
-    "test": "rstest"
+    "release": "changeset publish",
+    "test": "rstest",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.11",
