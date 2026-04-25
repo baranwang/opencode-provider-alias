@@ -1,4 +1,5 @@
-import { merge, mergeWith } from 'es-toolkit';
+import { mergeWith } from 'es-toolkit';
+import { merge } from 'es-toolkit/compat';
 import {
   getModelConfig,
   type ModelsConfig,
@@ -36,7 +37,9 @@ export const mergeProviderConfig = (
     Object.entries(modelAliases).map(([modelID, modelRef]) => [
       modelID,
       merge(
-        merge({}, getModelConfig(modelsConfig, modelRef, finalConfig.provider)),
+        {},
+        getModelConfig(modelsConfig, modelRef, finalConfig.provider),
+        { id: modelID },
         userModels[modelID] ?? {},
       ),
     ]),

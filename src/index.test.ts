@@ -238,6 +238,38 @@ test('用户用对象配置把本地模型别名映射到目标模型', async ()
   server.close();
 });
 
+test('本地模型别名会保留为最终模型 id', () => {
+  const merged = mergeProviderConfig(
+    {
+      provider: 'kimi-for-coding',
+      models: {
+        'kimi-k2.6': 'k2p6',
+      },
+    },
+    {
+      models: {
+        'kimi-k2.6': {},
+      },
+    },
+    {
+      'kimi-for-coding': {
+        models: {
+          k2p6: {
+            id: 'k2p6',
+            name: 'Kimi K2.6',
+          },
+        },
+      },
+    },
+  );
+
+  expect(merged.models?.['kimi-k2.6']).toMatchObject({
+    id: 'kimi-k2.6',
+    name: 'Kimi K2.6',
+  });
+  expect(merged.models).not.toHaveProperty('k2p6');
+});
+
 test('用户映射 provider 时保留自己配置的 provider 信息', async () => {
   const { client, server } = await createTestOpencode({
     port: 0,
