@@ -7,6 +7,8 @@ import {
 } from '@opencode-ai/sdk';
 import { expect, test } from '@rstest/core';
 import { providerAlias } from './index';
+import { sanitizeModelsConfig } from './model-registry';
+import { mergeProviderConfig } from './provider-config';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -381,4 +383,52 @@ test('用户传入非法插件配置时会收到配置错误', async () => {
       },
     }),
   ).rejects.toThrow('Invalid options');
+});
+
+test('models.dev provider 顶层元数据会被清理但模型字段保留', () => {
+  const sanitized = sanitizeModelsConfig({
+    openai: {
+      id: 'openai',
+      env: 'OPENAI_API_KEY',
+      doc: 'provider doc',
+      name: 'OpenAI',
+      models: {
+        'gpt-5.5': {
+          id: 'gpt-5.5',
+          env: 'MODEL_ENV',
+          doc: 'model doc',
+          family: 'gpt',
+        },
+      },
+    },
+  });
+
+  expect(sanitized.openai).not.toHaveProperty('id');
+  expect(sanitized.openai).not.toHaveProperty('env');
+  expect(sanitized.openai).not.toHaveProperty('doc');
+  expect(sanitized.openai).toHaveProperty('name', 'OpenAI');
+  expect(sanitized.openai.models?.['gpt-5.5']).toMatchObject({
+    id: 'gpt-5.5',
+    env: 'MODEL_ENV',
+    doc: 'model doc',
+    family: 'gpt',
+  });
+});
+
+test('用户配置的 provider 顶层 id/env/doc 会在合并后保留', () => {
+  const merged = mergeProviderConfig(
+    'openai',
+    {
+      id: 'user-provider',
+      env: 'USER_PROVIDER_ENV',
+      doc: 'user provider doc',
+      name: 'User Provider',
+    },
+    {},
+  );
+
+  expect(merged).toHaveProperty('id', 'user-provider');
+  expect(merged).toHaveProperty('env', 'USER_PROVIDER_ENV');
+  expect(merged).toHaveProperty('doc', 'user provider doc');
+  expect(merged).toHaveProperty('name', 'User Provider');
 });

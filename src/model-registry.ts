@@ -21,17 +21,41 @@ export const toModelsConfig = (value: unknown): Record<string, ModelConfig> => {
   return value as Record<string, ModelConfig>;
 };
 
+export const sanitizeModelsConfig = (value: unknown): ModelsConfig => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([providerID, providerConfig]) => {
+      if (
+        !providerConfig ||
+        typeof providerConfig !== 'object' ||
+        Array.isArray(providerConfig)
+      ) {
+        return [providerID, {}];
+      }
+
+      const { id, env, doc, ...rest } = providerConfig as ProviderConfig;
+      return [providerID, rest as ProviderConfig];
+    }),
+  );
+};
+
 export const loadModelConfig = async (): Promise<ModelsConfig> => {
   const modelsConfigPath = path.join(opencodeCacheDir, 'models.json');
   if (fs.existsSync(modelsConfigPath)) {
-    return JSON.parse(fs.readFileSync(modelsConfigPath, 'utf-8'));
+    return sanitizeModelsConfig(
+      JSON.parse(fs.readFileSync(modelsConfigPath, 'utf-8')),
+    );
   }
   return fetch('https://models.dev/api.json')
     .then((res) => res.json())
     .then((data) => {
+      const sanitizedData = sanitizeModelsConfig(data);
       fs.mkdirSync(opencodeCacheDir, { recursive: true });
-      fs.writeFileSync(modelsConfigPath, JSON.stringify(data));
-      return data as ModelsConfig;
+      fs.writeFileSync(modelsConfigPath, JSON.stringify(sanitizedData));
+      return sanitizedData;
     });
 };
 
