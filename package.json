@@ -1,0 +1,32 @@
+{
+  "name": "opencode-provider-alias",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib",
+    "check": "biome check --write",
+    "dev": "rslib --watch",
+    "format": "biome format --write",
+    "test": "rstest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.11",
+    "@changesets/cli": "^2.31.0",
+    "@opencode-ai/plugin": "^1.14.24",
+    "@opencode-ai/sdk": "^1.14.24",
+    "@rslib/core": "^0.21.3",
+    "@rstest/core": "^0.9.9",
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "es-toolkit": "^1.46.0",
+    "minimatch": "^9.0.9",
+    "zod": "^4.3.6"
+  }
+}
