@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { isPlainObject, omit } from 'es-toolkit';
 import { Minimatch } from 'minimatch';
 
 export type ModelConfig = Record<string, unknown>;
@@ -14,7 +15,7 @@ export type ModelsConfig = Record<string, ProviderConfig>;
 const opencodeCacheDir = path.join(os.homedir(), '.cache', 'opencode');
 
 export const toModelsConfig = (value: unknown): Record<string, ModelConfig> => {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+  if (!isPlainObject(value)) {
     return {};
   }
 
@@ -22,22 +23,17 @@ export const toModelsConfig = (value: unknown): Record<string, ModelConfig> => {
 };
 
 export const sanitizeModelsConfig = (value: unknown): ModelsConfig => {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+  if (!isPlainObject(value)) {
     return {};
   }
 
   return Object.fromEntries(
     Object.entries(value).map(([providerID, providerConfig]) => {
-      if (
-        !providerConfig ||
-        typeof providerConfig !== 'object' ||
-        Array.isArray(providerConfig)
-      ) {
+      if (!isPlainObject(providerConfig)) {
         return [providerID, {}];
       }
 
-      const { id, env, doc, ...rest } = providerConfig as ProviderConfig;
-      return [providerID, rest as ProviderConfig];
+      return [providerID, omit(providerConfig, ['id', 'env', 'doc'])];
     }),
   );
 };
