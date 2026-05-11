@@ -72,7 +72,9 @@ export const getModelConfig = (
     return {};
   }
 
-  return modelsConfig[providerID]?.models?.[modelID] ?? {};
+  return omit(modelsConfig[providerID]?.models?.[modelID] ?? {}, [
+    'experimental',
+  ]);
 };
 
 export const resolveIncludedModels = (
