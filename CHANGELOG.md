@@ -1,5 +1,11 @@
 # opencode-provider-alias
 
+## 1.0.4
+
+### Patch Changes
+
+- 97b52d5: Exclude the `experimental` field from models.dev model configs when merging into user provider configs.
+
 ## 1.0.3
 
 ### Patch Changes

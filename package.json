@@ -1,6 +1,6 @@
 {
   "name": "opencode-provider-alias",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Alias and curate OpenCode providers with model metadata from models.dev.",
   "license": "MIT",
   "keywords": [
