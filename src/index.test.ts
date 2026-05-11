@@ -405,6 +405,36 @@ test('用户只在插件中配置 provider 时不会创建新的 provider', asyn
   server.close();
 });
 
+test('合并 model 配置时会排除 experimental 字段', () => {
+  const merged = mergeProviderConfig(
+    {
+      provider: 'openai',
+      models: {
+        'my-model': 'gpt-5.5',
+      },
+    },
+    {
+      models: {
+        'my-model': {},
+      },
+    },
+    {
+      openai: {
+        models: {
+          'gpt-5.5': {
+            id: 'gpt-5.5',
+            family: 'gpt',
+            experimental: true,
+          },
+        },
+      },
+    },
+  );
+
+  expect(merged.models?.['my-model']).toHaveProperty('family', 'gpt');
+  expect(merged.models?.['my-model']).not.toHaveProperty('experimental');
+});
+
 test('用户传入非法插件配置时会收到配置错误', async () => {
   await expect(
     providerAlias({} as Parameters<typeof providerAlias>[0], {
