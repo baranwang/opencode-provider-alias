@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { isPlainObject, omit } from 'es-toolkit';
+import { isPlainObject, mapValues, omit } from 'es-toolkit';
 import { Minimatch } from 'minimatch';
 
 export type ModelConfig = Record<string, unknown>;
@@ -14,12 +14,13 @@ export type ModelsConfig = Record<string, ProviderConfig>;
 
 const opencodeCacheDir = path.join(os.homedir(), '.cache', 'opencode');
 
+const filterModelConfig = (value: ModelConfig) => omit(value, ['experimental']);
+
 export const toModelsConfig = (value: unknown): Record<string, ModelConfig> => {
   if (!isPlainObject(value)) {
     return {};
   }
-
-  return value as Record<string, ModelConfig>;
+  return mapValues(value, (model) => filterModelConfig(model));
 };
 
 export const sanitizeModelsConfig = (value: unknown): ModelsConfig => {
@@ -27,15 +28,15 @@ export const sanitizeModelsConfig = (value: unknown): ModelsConfig => {
     return {};
   }
 
-  return Object.fromEntries(
-    Object.entries(value).map(([providerID, providerConfig]) => {
-      if (!isPlainObject(providerConfig)) {
-        return [providerID, {}];
-      }
-
-      return [providerID, omit(providerConfig, ['id', 'env', 'doc'])];
-    }),
-  );
+  return mapValues(value, (providerConfig) => {
+    if (!isPlainObject(providerConfig)) {
+      return {};
+    }
+    return {
+      ...omit(providerConfig, ['id', 'env', 'doc']),
+      models: toModelsConfig(providerConfig.models),
+    };
+  });
 };
 
 export const loadModelConfig = async (): Promise<ModelsConfig> => {
@@ -72,9 +73,7 @@ export const getModelConfig = (
     return {};
   }
 
-  return omit(modelsConfig[providerID]?.models?.[modelID] ?? {}, [
-    'experimental',
-  ]);
+  return filterModelConfig(modelsConfig[providerID]?.models?.[modelID] ?? {});
 };
 
 export const resolveIncludedModels = (
@@ -127,7 +126,7 @@ export const resolveIncludedModels = (
   return Object.fromEntries(
     Array.from(selectedModelIDs).map((modelID) => [
       modelID,
-      userModels[modelID] ?? {},
+      filterModelConfig(userModels[modelID] ?? {}),
     ]),
   );
 };
